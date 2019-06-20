@@ -12,14 +12,31 @@
 	<link rel="stylesheet" href="css/theme/black.css">
 
 	<style type="text/css">
-		.title td {
+		.reveal .title td {
 			vertical-align: middle;
 			width: 50%;
+		}
+
+		.twocolumn {
+			display: grid;
+			grid-template-columns: 50% 50%;
+			grid-gap: 10px;
+			text-align: left;
+		}
+
+		.twocolumn pre {
+			display: inline-block;
+			font-size: 0.33em;
+			width: 100%;
+		}
+
+		.reveal section img.transparent {
+			background: none;
 		}
 	</style>
 
 	<!-- Theme used for syntax highlighting of code -->
-	<link rel="stylesheet" href="lib/css/monokai.css">
+	<link rel="stylesheet" href="lib/css/vs2015.css">
 
 	<!-- Printing and PDF exports -->
 	<script>
@@ -54,16 +71,591 @@
 						<td>
 							<p>Agenda:</p>
 							<ol>
-								<li>What is functional programming</dt>
-								<li>From imperative to declarative - a concrete example</dt>
-								<li>Benefits of functional programming</dt>
-								</ol>
+								<li>What is functional programming</li>
+								<li>From imperative to declarative - a concrete example</li>
+								<li>Thinking Functionally</li>
+								<li>Pure functions and immutable data</li>
+							</ol>
 						</td>
 						<td>
 							<img src="https://imgs.xkcd.com/comics/functional_2x.png" alt="Functional">
 						</td>
 					</tr>
 				</table>
+			</section>
+			<section data-transition="convex">
+				<h3>What is functional programming</h3>
+				<section>
+					<blockquote>If you ask two functional programmers what FP is, you’ll get (at least) three different answers
+					</blockquote>
+				</section>
+				<section>
+					<blockquote>
+						&ldquo;Functional programming is a style of programming that emphasizes the evaluation of expressions,
+						rather than execution of commands.<br />
+						The expressions in these languages are formed by using functions to combine basic values.&rdquo;
+					</blockquote>
+					<small>FAQ for <cite>comp.lang.functional</cite></small>
+				</section>
+				<section>
+					<ul>
+						<li class="fragment">Avoiding State
+							<ul>
+								<li>Strive for pure functions</li>
+								<li>Prefer immutable data</li>
+							</ul>
+						</li>
+						<li class="fragment">Functions as first-class entities</li>
+						<li class="fragment">Declerative programming
+							<ul>
+								<li>Imperative: how to do something</li>
+								<li>Declarative: what should be done</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section data-transition="convex">A concrete example</section>
+			<section data-transition="convex">
+				<h3>Line count</h3>
+				<section>
+					<blockquote>Given a list of files, calculate the number of lines in each file</blockquote>
+				</section>
+				<section>
+					<ol>
+						<li class="fragment">Open each file</li>
+						<li class="fragment">Define a counter to store the number of lines</li>
+						<li class="fragment">Read the file one character at a time, and increase the counter every time the newline
+							character
+							(<code>/n</code>) occurs</li>
+						<li class="fragment">At the end of a file, store the number of lines calculated</li>
+					</ol>
+				</section>
+				<section data-transition="slice none">
+					<pre>
+						<code class="stretch" data-line-numbers="">std::vector&lt;int&gt;
+count_lines_in_files
+(const std::vector&lt;std::string&gt;& files)
+{
+	std::vector&lt;int&gt; results;
+	for (const auto& file : files) {
+		int line_count = 0;
+		std::ifstream in(file);
+		char c = 0;
+		while (in.get(c)) {
+			if (c == '\n') {
+				line_count++;
+			}
+		}
+		results.push_back(line_count);
+	}
+	return results;
+}</code>
+					</pre>
+				</section>
+				<section data-transition="none none">
+					<pre>
+						<code class="stretch" data-line-numbers="1-4,18">std::vector&lt;int&gt;
+count_lines_in_files
+(const std::vector&lt;std::string&gt;& files)
+{
+	std::vector&lt;int&gt; results;
+	for (const auto& file : files) {
+		int line_count = 0;
+		std::ifstream in(file);
+		char c = 0;
+		while (in.get(c)) {
+			if (c == '\n') {
+				line_count++;
+			}
+		}
+		results.push_back(line_count);
+	}
+	return results;
+}</code>
+					</pre>
+				</section>
+				<section data-transition="none none">
+					<pre>
+						<code class="stretch" data-line-numbers="5">std::vector&lt;int&gt;
+count_lines_in_files
+(const std::vector&lt;std::string&gt;& files)
+{
+	std::vector&lt;int&gt; results;
+	for (const auto& file : files) {
+		int line_count = 0;
+		std::ifstream in(file);
+		char c = 0;
+		while (in.get(c)) {
+			if (c == '\n') {
+				line_count++;
+			}
+		}
+		results.push_back(line_count);
+	}
+	return results;
+}</code>
+					</pre>
+				</section>
+				<section data-transition="none none">
+					<pre>
+						<code class="stretch" data-line-numbers="6,16">std::vector&lt;int&gt;
+count_lines_in_files
+(const std::vector&lt;std::string&gt;& files)
+{
+	std::vector&lt;int&gt; results;
+	for (const auto& file : files) {
+		int line_count = 0;
+		std::ifstream in(file);
+		char c = 0;
+		while (in.get(c)) {
+			if (c == '\n') {
+				line_count++;
+			}
+		}
+		results.push_back(line_count);
+	}
+	return results;
+}</code>
+					</pre>
+				</section>
+				<section data-transition="none none">
+					<pre>
+						<code class="stretch" data-line-numbers="7-8">std::vector&lt;int&gt;
+count_lines_in_files
+(const std::vector&lt;std::string&gt;& files)
+{
+	std::vector&lt;int&gt; results;
+	for (const auto& file : files) {
+		int line_count = 0;
+		std::ifstream in(file);
+		char c = 0;
+		while (in.get(c)) {
+			if (c == '\n') {
+				line_count++;
+			}
+		}
+		results.push_back(line_count);
+	}
+	return results;
+}</code>
+					</pre>
+				</section>
+				<section data-transition="none none">
+					<pre>
+						<code class="stretch" data-line-numbers="9-14">std::vector&lt;int&gt;
+count_lines_in_files
+(const std::vector&lt;std::string&gt;& files)
+{
+	std::vector&lt;int&gt; results;
+	for (const auto& file : files) {
+		int line_count = 0;
+		std::ifstream in(file);
+		char c = 0;
+		while (in.get(c)) {
+			if (c == '\n') {
+				line_count++;
+			}
+		}
+		results.push_back(line_count);
+	}
+	return results;
+}</code>
+					</pre>
+				</section>
+				<section data-transition="none none">
+					<pre>
+						<code class="stretch" data-line-numbers="15">std::vector&lt;int&gt;
+count_lines_in_files
+(const std::vector&lt;std::string&gt;& files)
+{
+	std::vector&lt;int&gt; results;
+	for (const auto& file : files) {
+		int line_count = 0;
+		std::ifstream in(file);
+		char c = 0;
+		while (in.get(c)) {
+			if (c == '\n') {
+				line_count++;
+			}
+		}
+		results.push_back(line_count);
+	}
+	return results;
+}</code>
+					</pre>
+				</section>
+				<section data-transition="none">
+					<pre>
+						<code class="stretch" data-line-numbers="17">std::vector&lt;int&gt;
+count_lines_in_files
+(const std::vector&lt;std::string&gt;& files)
+{
+	std::vector&lt;int&gt; results;
+	for (const auto& file : files) {
+		int line_count = 0;
+		std::ifstream in(file);
+		char c = 0;
+		while (in.get(c)) {
+			if (c == '\n') {
+				line_count++;
+			}
+		}
+		results.push_back(line_count);
+	}
+	return results;
+}</code>
+					</pre>
+				</section>
+				<section>
+					<pre>
+						<code class="hljs" data-line-numbers="1-9, 18">int count_lines(const std::string& filename)
+{
+	std::ifstream in(filename);
+
+	return std::count(
+		std::istreambuf_iterator&lt;char&gt;(in),
+		std::istreambuf_iterator&lt;char&gt;(),
+		'\n');
+}</code>
+					</pre>
+				</section>
+				<section data-transition="slide none">
+					<pre>
+						<code class="stretch" data-line-numbers="8">std::vector&lt;int&gt;
+count_lines_in_files
+(const std::vector&lt;std::string&gt;& files)
+{
+	std::vector&lt;int&gt; results;
+
+	for (const auto& file : files) {
+		results.push_back(count_lines(file));
+	}
+
+	return results;
+}</code>
+					</pre>
+				</section>
+				<section data-transition="none none">
+					<pre>
+						<code class="stretch" data-line-numbers="5-9" data-trim>
+							std::vector&lt;int&gt;
+							count_lines_in_files
+							(const std::vector&lt;std::string&gt;& files)
+							{
+								std::vector&lt;int&gt; results(files.size());
+
+								std::transform(files.begin(), files.end(), 
+									results.begin(),
+									count_lines);
+
+								return results;
+							}
+						</code>
+					</pre>
+				</section>
+				<section data-transition="none slide">
+					<pre>
+						<code class="stretch" data-line-numbers  data-trim data-noescape>
+							std::vector&lt;int&gt;
+							count_lines_in_files
+							(const std::vector&lt;std::string&gt;& <mark>files</mark>)
+							{
+								std::vector&lt;int&gt; results(files.size());
+
+								std::<mark>transform</mark>(files.begin(), files.end(), 
+									results.begin(),
+									<mark>count_lines</mark>);
+
+								return results;
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<pre>
+						<code class="stretch" data-line-numbers="6" data-trim>
+							std::vector&lt;int&gt;
+							count_lines_in_files
+							(const std::vector&lt;std::string&gt;& files)
+							{
+								using std::ranges::transform;
+								return files | transform(count_lines);
+							}
+						</code>
+					</pre>
+				</section>
+				<section>
+					<pre>
+						<code data-trim style="text-align: center">
+							int count_lines(const std::string&);
+						</code>
+					</pre>
+				</section>
+				<section>
+					<pre>
+						<code data-trim style="text-align: center">
+							std::ifstream open_file(const std::string&);
+						</code>
+						<code data-trim style="text-align: center">
+							int count_lines(std::ifstream);
+						</code>
+					</pre>
+				</section>
+				<section>
+					<pre>
+						<code class="stretch" data-trim data-line-numbers="1, 5, 16-17">
+							std::ifstream open_file(const std::string& filename){
+								return {filename};
+							}
+
+							int count_lines(std::fstream file) {
+								return ranges::count(
+									std::istreambuf_iterator&lt;char&gt;(file),
+									std::istreambuf_iterator&lt;char&gt;(),
+									'\n');
+							}
+
+							std::vector&lt;int&gt;
+							count_lines_in_files
+							(const std::vector&lt;std::string&gt;& files) {
+								using std::ranges::transform;
+								return files | transform(open_file)
+								             | transform(count_lines);
+							}
+						</code>
+					</pre>
+				</section>
+				<section data-transition="slide none">
+					<div class="twocolumn">
+						<div>
+							<p style="text-align: center">Imperative</p>
+							<pre>
+										<code data-trim data-line-numbers>
+												std::vector&lt;int&gt;
+												count_lines_in_files
+												(const std::vector&lt;std::string&gt;& files)
+												{
+													std::vector&lt;int&gt; results;
+													for (const auto& file : files) {
+														int line_count = 0;
+														std::ifstream in(file);
+														char c = 0;
+														while (in.get(c)) {
+															if (c == '\n') {
+																line_count++;
+															}
+														}
+														results.push_back(line_count);
+													}
+													return results;
+												}
+										</code>
+									</pre>
+						</div>
+						<div>
+							<p style="text-align: center">Declarative</p>
+							<pre>
+									<code data-trim data-line-numbers>
+										std::ifstream open_file(const std::string& filename){
+											return {filename};
+										}
+
+										int count_lines(std::fstream file) {
+											return ranges::count(
+												std::istreambuf_iterator&lt;char&gt;(file),
+												std::istreambuf_iterator&lt;char&gt;(),
+												'\n');
+										}
+
+										std::vector&lt;int&gt;
+										count_lines_in_files
+										(const std::vector&lt;std::string&gt;& files) {
+											using std::ranges::transform;
+											return files | transform(open_file)
+											             | transform(count_lines);
+										}
+									</code>
+								</pre>
+						</div>
+					</div>
+				</section>
+				<section data-transition="none slide">
+					<div class="twocolumn">
+						<div>
+							<p style="text-align: center">Imperative</p>
+							<pre>
+										<code data-trim data-line-numbers="5, 7-9">
+												std::vector&lt;int&gt;
+												count_lines_in_files
+												(const std::vector&lt;std::string&gt;& files)
+												{
+													std::vector&lt;int&gt; results;
+													for (const auto& file : files) {
+														int line_count = 0;
+														std::ifstream in(file);
+														char c = 0;
+														while (in.get(c)) {
+															if (c == '\n') {
+																line_count++;
+															}
+														}
+														results.push_back(line_count);
+													}
+													return results;
+												}
+										</code>
+									</pre>
+						</div>
+						<div>
+							<p style="text-align: center">Declarative</p>
+							<pre>
+									<code data-trim data-line-numbers="-1">
+										std::ifstream open_file(const std::string& filename){
+											return {filename};
+										}
+
+										int count_lines(std::fstream file) {
+											return ranges::count(
+												std::istreambuf_iterator&lt;char&gt;(file),
+												std::istreambuf_iterator&lt;char&gt;(),
+												'\n');
+										}
+
+										std::vector&lt;int&gt;
+										count_lines_in_files
+										(const std::vector&lt;std::string&gt;& files) {
+											using std::ranges::transform;
+											return files | transform(open_file)
+											             | transform(count_lines);
+										}
+									</code>
+								</pre>
+						</div>
+					</div>
+				</section>
+			</section>
+			<section data-transition="convex">Thinking functionally</section>
+			<section data-transition="convex">
+				<h3>Thinking functionally</h3>
+				<section data-transition="slide fade">
+					<img data-src="lib/resources/thinking0.png" class="plain transparent">
+				</section>
+				<section data-transition="fade">
+					<img data-src="lib/resources/thinking1.png" class="plain transparent">
+				</section>
+				<section data-transition="fade none">
+					<img data-src="lib/resources/thinking2.png" class="plain transparent">
+				</section>
+				<section data-transition="none">
+					<img data-src="lib/resources/thinking3.png" class="plain transparent">
+				</section>
+			</section>
+			<section data-transition="convex">Pure functions and immutable data</section>
+			<section data-transition="convex slide">
+				<h3>Pure functions and immutable data</h3>
+				<section>
+					<h6>Definition of a pure function:</h6>
+					<ul>
+						<li>Output depends only on input</li>
+						<li>No side effects</li>
+					</ul>
+				</section>
+				<section>
+					<h6>Pure functions are easier to:</h6>
+					<ul>
+						<li class="fragment">reason about</li>
+						<li class="fragment">combine</li>
+						<li class="fragment">test</li>
+						<li class="fragment">debug</li>
+						<li class="fragment">parallelize</li>
+					</ul>
+				</section>
+			</section>
+			<section>
+				<h3>Pure functions and immutable data</h3>
+				<h5>Examples:</h5>
+				<section data-transition="slide none">
+					<pre>
+						<code data-trim class="cpp" data-noescape>
+							<span class="fragment">// pure</span>
+							int sum(int a, int b) {
+								return a + b;
+							}
+						</code>
+					</pre>
+				</section>
+				<section data-transition="none">
+					<pre>
+						<code data-trim data-noescape class="cpp">
+							<span class="fragment">// impure - output depends on external value</span>
+							int a;
+							int getA() {
+								return a;
+							}
+						</code>
+					</pre>
+				</section>
+				<section data-transition="none">
+					<pre>
+						<code data-trim data-noescape class="cpp">
+							<span class="fragment">// impure - side effect</span>
+							int count() {
+								static int x = 0;
+								++x;
+								return x;
+							}
+						</code>
+					</pre>
+				</section>
+				<section data-transition="none">
+					<pre>
+						<code data-trim data-noescape class="cpp">
+							<span class="fragment">// impure - side effect</span>
+							void hello() {
+								std::cout &lt;&lt; "Hello, world!\n" &lt;&lt;;
+							}
+						</code>
+					</pre>
+				</section>
+				<section data-transition="none">
+					<pre>
+						<code data-trim data-noescape class="cpp">
+							<span class="fragment">// impure - side effect</span>
+							void inc(int &x) {
+								x += 1;
+							}
+						</code>
+					</pre>
+				</section>
+				<section data-transition="none">
+					<pre>
+						<code data-trim data-noescape class="cpp">
+							<span class="fragment">// pure</span>
+							auto getInc() {
+								return [](int &x) {
+									x += 1;
+								};
+							}
+						</code>
+					</pre>
+				</section>
+			</section>
+			<section>
+				<h3>Pure functions and immutable data</h3>
+				<section>
+					<h6>Advantages of immutable data:</h6>
+					<ul>
+						<li>Encourages writing side-effect free functions</li>
+						<li>Avoids concurrency problems caused by shared mutable state</li>
+						<li>Easier to reason about</li>
+					</ul>
+				</section>
+				<section data-background-iframe="https://gcc.godbolt.org/z/iejoxY" data-background-interactive>
+				</section>
+			</section>
+			<section data-transition="convex">
+				Thank You!
 			</section>
 		</div>
 	</div>
@@ -75,32 +667,40 @@
 		// - https://github.com/hakimel/reveal.js#configuration
 		// - https://github.com/hakimel/reveal.js#dependencies
 		Reveal.initialize({
+			escapeHTML: false,
+			slideNumber: 'c',
+			hash: true,
 			dependencies: [
 				{ src: 'plugin/markdown/marked.js' },
 				{ src: 'plugin/markdown/markdown.js' },
 				{ src: 'plugin/notes/notes.js', async: true },
-				{ src: 'plugin/highlight/highlight.js', async: true }
+				{ src: 'plugin/highlight/highlight.js', async: true },
+				// Other plugins
+				{ src: 'node_modules/revealjs-animated/dist/revealjs-animated.js', async: true }
 			]
 		});
 	</script>
 	<style type="text/css">
-		.container {
+		.footer {
 			display: grid;
 			grid-template-columns: 40% 40% auto;
 			position: absolute;
 			bottom: 3%;
 			justify-content: space-around;
 			width: 100%;
-			font-size: 70%;
+			font-size: 50%;
+			color: black;
+			padding-top: 2px;
+			padding-bottom: 2px;
 		}
 	</style>
 
 	<!-- 2. Create hidden header/footer <div> -->
 	<div id="hidden" style="display:none;">
 		<div id="header">
-			<div class="container">
-				<div>Introduction to Functional Programming</div>
+			<div class="footer">
 				<div>Dvir Yitzchaki, Verizon Media, July 2019</div>
+				<div>Introduction to Functional Programming</div>
 			</div>
 		</div>
 	</div>
@@ -108,6 +708,9 @@
 	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 	<script type="text/javascript">
 		// 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
+		var background = $("body").css("background-color")
+		var foreground = $(".reveal").css("color")
+		$(".footer").css("background-image", `linear-gradient(to right, ${foreground}, ${background})`)
 		var header = $('#header').html();
 		if (window.location.search.match(/print-pdf/gi)) {
 			Reveal.addEventListener('ready', function (event) {
