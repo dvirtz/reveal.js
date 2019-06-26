@@ -33,6 +33,14 @@
 		.reveal section img.transparent {
 			background: none;
 		}
+
+		.reveal blockquote p::before {
+			content: "“";
+		}
+
+		.reveal blockquote p::after {
+			content: '”';
+		}
 	</style>
 
 	<!-- Theme used for syntax highlighting of code -->
@@ -86,16 +94,17 @@
 			<section data-transition="convex">
 				<h3>What is functional programming</h3>
 				<section>
-					<blockquote>If you ask two functional programmers what FP is, you’ll get (at least) three different answers
+					<blockquote>
+						<p>If you ask two functional programmers what FP is, you’ll get (at least) three different answers</p>
 					</blockquote>
 				</section>
 				<section>
 					<blockquote>
-						&ldquo;Functional programming is a style of programming that emphasizes the evaluation of expressions,
-						rather than execution of commands.<br />
-						The expressions in these languages are formed by using functions to combine basic values.&rdquo;
+						<p>Functional programming is a style of programming that emphasizes the evaluation of expressions,
+							rather than execution of commands.<br />
+							The expressions in these languages are formed by using functions to combine basic values.</p>
+						<footer style="text-align: left; font-style: normal; color: gray">--FAQ for comp.lang.functional</footer>
 					</blockquote>
-					<small>FAQ for <cite>comp.lang.functional</cite></small>
 				</section>
 				<section>
 					<ul>
@@ -113,6 +122,9 @@
 							</ul>
 						</li>
 					</ul>
+					<aside class="notes">
+						Some of the highlights of FP are:
+					</aside>
 				</section>
 			</section>
 			<section data-transition="convex">A concrete example</section>
@@ -125,216 +137,290 @@
 					<ol>
 						<li class="fragment">Open each file</li>
 						<li class="fragment">Define a counter to store the number of lines</li>
-						<li class="fragment">Read the file one character at a time, and increase the counter every time the newline
-							character
-							(<code>/n</code>) occurs</li>
+						<li class="fragment">
+							Read the file one character at a time, and increase the counter every time the newline
+							character (<code>/n</code>) occurs
+						</li>
 						<li class="fragment">At the end of a file, store the number of lines calculated</li>
 					</ol>
+					<aside class="notes">
+						We might solve this problem in the following way:
+					</aside>
 				</section>
 				<section data-transition="slice none">
 					<pre>
-						<code class="stretch" data-line-numbers="">std::vector&lt;int&gt;
-count_lines_in_files
-(const std::vector&lt;std::string&gt;& files)
-{
-	std::vector&lt;int&gt; results;
-	for (const auto& file : files) {
-		int line_count = 0;
-		std::ifstream in(file);
-		char c = 0;
-		while (in.get(c)) {
-			if (c == '\n') {
-				line_count++;
-			}
-		}
-		results.push_back(line_count);
-	}
-	return results;
-}</code>
+						<code class="stretch" data-line-numbers="" data-trim>
+							std::vector&lt;int&gt;
+							count_lines_in_files
+							(const std::vector&lt;std::string&gt;& files)
+							{
+								std::vector&lt;int&gt; results;
+								for (const auto& file : files) {
+									int line_count = 0;
+									std::ifstream in(file);
+									char c = 0;
+									while (in.get(c)) {
+										if (c == '\n') {
+											line_count++;
+										}
+									}
+									results.push_back(line_count);
+								}
+								return results;
+							}
+						</code>
+					</pre>
+					<aside class="notes">
+						This is the algorithm in code.
+						Let's go through this
+					</aside>
+				</section>
+				<section data-transition="none none">
+					<pre>
+						<code class="stretch" data-line-numbers="1-4,18" data-trim>
+							std::vector&lt;int&gt;
+							count_lines_in_files
+							(const std::vector&lt;std::string&gt;& files)
+							{
+								std::vector&lt;int&gt; results;
+								for (const auto& file : files) {
+									int line_count = 0;
+									std::ifstream in(file);
+									char c = 0;
+									while (in.get(c)) {
+										if (c == '\n') {
+											line_count++;
+										}
+									}
+									results.push_back(line_count);
+								}
+								return results;
+							}
+						</code>
 					</pre>
 				</section>
 				<section data-transition="none none">
 					<pre>
-						<code class="stretch" data-line-numbers="1-4,18">std::vector&lt;int&gt;
-count_lines_in_files
-(const std::vector&lt;std::string&gt;& files)
-{
-	std::vector&lt;int&gt; results;
-	for (const auto& file : files) {
-		int line_count = 0;
-		std::ifstream in(file);
-		char c = 0;
-		while (in.get(c)) {
-			if (c == '\n') {
-				line_count++;
-			}
-		}
-		results.push_back(line_count);
-	}
-	return results;
-}</code>
+						<code class="stretch" data-line-numbers="5" data-trim>
+							std::vector&lt;int&gt;
+							count_lines_in_files
+							(const std::vector&lt;std::string&gt;& files)
+							{
+								std::vector&lt;int&gt; results;
+								for (const auto& file : files) {
+									int line_count = 0;
+									std::ifstream in(file);
+									char c = 0;
+									while (in.get(c)) {
+										if (c == '\n') {
+											line_count++;
+										}
+									}
+									results.push_back(line_count);
+								}
+								return results;
+							}
+						</code>
 					</pre>
 				</section>
 				<section data-transition="none none">
 					<pre>
-						<code class="stretch" data-line-numbers="5">std::vector&lt;int&gt;
-count_lines_in_files
-(const std::vector&lt;std::string&gt;& files)
-{
-	std::vector&lt;int&gt; results;
-	for (const auto& file : files) {
-		int line_count = 0;
-		std::ifstream in(file);
-		char c = 0;
-		while (in.get(c)) {
-			if (c == '\n') {
-				line_count++;
-			}
-		}
-		results.push_back(line_count);
-	}
-	return results;
-}</code>
+						<code class="stretch" data-line-numbers="6,16" data-trim>
+							std::vector&lt;int&gt;
+							count_lines_in_files
+							(const std::vector&lt;std::string&gt;& files)
+							{
+								std::vector&lt;int&gt; results;
+								for (const auto& file : files) {
+									int line_count = 0;
+									std::ifstream in(file);
+									char c = 0;
+									while (in.get(c)) {
+										if (c == '\n') {
+											line_count++;
+										}
+									}
+									results.push_back(line_count);
+								}
+								return results;
+							}
+						</code>
 					</pre>
 				</section>
 				<section data-transition="none none">
 					<pre>
-						<code class="stretch" data-line-numbers="6,16">std::vector&lt;int&gt;
-count_lines_in_files
-(const std::vector&lt;std::string&gt;& files)
-{
-	std::vector&lt;int&gt; results;
-	for (const auto& file : files) {
-		int line_count = 0;
-		std::ifstream in(file);
-		char c = 0;
-		while (in.get(c)) {
-			if (c == '\n') {
-				line_count++;
-			}
-		}
-		results.push_back(line_count);
-	}
-	return results;
-}</code>
+						<code class="stretch" data-line-numbers="7-8" data-trim>
+							std::vector&lt;int&gt;
+							count_lines_in_files
+							(const std::vector&lt;std::string&gt;& files)
+							{
+								std::vector&lt;int&gt; results;
+								for (const auto& file : files) {
+									int line_count = 0;
+									std::ifstream in(file);
+									char c = 0;
+									while (in.get(c)) {
+										if (c == '\n') {
+											line_count++;
+										}
+									}
+									results.push_back(line_count);
+								}
+								return results;
+							}
+						</code>
 					</pre>
 				</section>
 				<section data-transition="none none">
 					<pre>
-						<code class="stretch" data-line-numbers="7-8">std::vector&lt;int&gt;
-count_lines_in_files
-(const std::vector&lt;std::string&gt;& files)
-{
-	std::vector&lt;int&gt; results;
-	for (const auto& file : files) {
-		int line_count = 0;
-		std::ifstream in(file);
-		char c = 0;
-		while (in.get(c)) {
-			if (c == '\n') {
-				line_count++;
-			}
-		}
-		results.push_back(line_count);
-	}
-	return results;
-}</code>
+						<code class="stretch" data-line-numbers="9-14" data-trim>
+							std::vector&lt;int&gt;
+							count_lines_in_files
+							(const std::vector&lt;std::string&gt;& files)
+							{
+								std::vector&lt;int&gt; results;
+								for (const auto& file : files) {
+									int line_count = 0;
+									std::ifstream in(file);
+									char c = 0;
+									while (in.get(c)) {
+										if (c == '\n') {
+											line_count++;
+										}
+									}
+									results.push_back(line_count);
+								}
+								return results;
+							}
+						</code>
 					</pre>
 				</section>
 				<section data-transition="none none">
 					<pre>
-						<code class="stretch" data-line-numbers="9-14">std::vector&lt;int&gt;
-count_lines_in_files
-(const std::vector&lt;std::string&gt;& files)
-{
-	std::vector&lt;int&gt; results;
-	for (const auto& file : files) {
-		int line_count = 0;
-		std::ifstream in(file);
-		char c = 0;
-		while (in.get(c)) {
-			if (c == '\n') {
-				line_count++;
-			}
-		}
-		results.push_back(line_count);
-	}
-	return results;
-}</code>
-					</pre>
-				</section>
-				<section data-transition="none none">
-					<pre>
-						<code class="stretch" data-line-numbers="15">std::vector&lt;int&gt;
-count_lines_in_files
-(const std::vector&lt;std::string&gt;& files)
-{
-	std::vector&lt;int&gt; results;
-	for (const auto& file : files) {
-		int line_count = 0;
-		std::ifstream in(file);
-		char c = 0;
-		while (in.get(c)) {
-			if (c == '\n') {
-				line_count++;
-			}
-		}
-		results.push_back(line_count);
-	}
-	return results;
-}</code>
+						<code class="stretch" data-line-numbers="15" data-trim>
+							std::vector&lt;int&gt;
+							count_lines_in_files
+							(const std::vector&lt;std::string&gt;& files)
+							{
+								std::vector&lt;int&gt; results;
+								for (const auto& file : files) {
+									int line_count = 0;
+									std::ifstream in(file);
+									char c = 0;
+									while (in.get(c)) {
+										if (c == '\n') {
+											line_count++;
+										}
+									}
+									results.push_back(line_count);
+								}
+								return results;
+							}
+						</code>
 					</pre>
 				</section>
 				<section data-transition="none">
 					<pre>
-						<code class="stretch" data-line-numbers="17">std::vector&lt;int&gt;
-count_lines_in_files
-(const std::vector&lt;std::string&gt;& files)
-{
-	std::vector&lt;int&gt; results;
-	for (const auto& file : files) {
-		int line_count = 0;
-		std::ifstream in(file);
-		char c = 0;
-		while (in.get(c)) {
-			if (c == '\n') {
-				line_count++;
-			}
-		}
-		results.push_back(line_count);
-	}
-	return results;
-}</code>
+						<code class="stretch" data-line-numbers="17" data-trim>
+							std::vector&lt;int&gt;
+							count_lines_in_files
+							(const std::vector&lt;std::string&gt;& files)
+							{
+								std::vector&lt;int&gt; results;
+								for (const auto& file : files) {
+									int line_count = 0;
+									std::ifstream in(file);
+									char c = 0;
+									while (in.get(c)) {
+										if (c == '\n') {
+											line_count++;
+										}
+									}
+									results.push_back(line_count);
+								}
+								return results;
+							}
+						</code>
 					</pre>
+				</section>
+				<section data-transition="none">
+					<pre>
+						<code class="stretch" data-line-numbers="" data-trim>
+							std::vector&lt;int&gt;
+							count_lines_in_files
+							(const std::vector&lt;std::string&gt;& files)
+							{
+								std::vector&lt;int&gt; results;
+								for (const auto& file : files) {
+									int line_count = 0;
+									std::ifstream in(file);
+									char c = 0;
+									while (in.get(c)) {
+										if (c == '\n') {
+											line_count++;
+										}
+									}
+									results.push_back(line_count);
+								}
+								return results;
+							}
+						</code>
+					</pre>
+					<aside class="notes">
+						two nested loops and a few variables to keep the current state of the process.
+						counting occurences of an element in a sequence is a recurring pattern and most
+						languages have abstractions for it and C++ is no different.
+					</aside>
 				</section>
 				<section>
 					<pre>
-						<code class="hljs" data-line-numbers="1-9, 18">int count_lines(const std::string& filename)
-{
-	std::ifstream in(filename);
+						<code class="hljs" data-line-numbers="1-9, 18" data-trim>
+							int count_lines(const std::string& filename)
+							{
+								std::ifstream in(filename);
 
-	return std::count(
-		std::istreambuf_iterator&lt;char&gt;(in),
-		std::istreambuf_iterator&lt;char&gt;(),
-		'\n');
-}</code>
+								return std::count(
+									std::istreambuf_iterator&lt;char&gt;(in),
+									std::istreambuf_iterator&lt;char&gt;(),
+									'\n');
+							}
+						</code>
 					</pre>
+
+					<aside class="notes">
+						With this solution, you’re no longer concerned about exactly how the counting is implemented;
+						you’re just <strong>declaring</strong> that you want to count the number of newlines that appear in the
+						given input stream.
+						This is always the main idea when writing programs in the functional style—use abstractions
+						that let you define the <strong>intent instead of specifying how</strong> to do something.<br>
+						we can use this function as follows:
+					</aside>
 				</section>
 				<section data-transition="slide none">
 					<pre>
-						<code class="stretch" data-line-numbers="8">std::vector&lt;int&gt;
-count_lines_in_files
-(const std::vector&lt;std::string&gt;& files)
-{
-	std::vector&lt;int&gt; results;
+						<code class="stretch" data-line-numbers="8" data-trim>
+							std::vector&lt;int&gt;
+							count_lines_in_files
+							(const std::vector&lt;std::string&gt;& files)
+							{
+								std::vector&lt;int&gt; results;
 
-	for (const auto& file : files) {
-		results.push_back(count_lines(file));
-	}
+								for (const auto& file : files) {
+									results.push_back(count_lines(file));
+								}
 
-	return results;
-}</code>
+								return results;
+							}
+						</code>
 					</pre>
+
+					<aside class="notes">
+						We're left with a range-based for loop that applies a function to all elements in a collection and collects
+						the results.
+						<strong>again</strong> this is a common pattern which is C++ is expressed by
+						<strong><code>std::transform</code></strong>
+						algorithm (called map on other languages)
+					</aside>
 				</section>
 				<section data-transition="none none">
 					<pre>
@@ -353,6 +439,11 @@ count_lines_in_files
 							}
 						</code>
 					</pre>
+
+					<aside class="notes">
+						This code no longer specifies the algorithm steps that need to be taken,
+						but rather how the input should be transformed in order to get the desired output
+					</aside>
 				</section>
 				<section data-transition="none slide">
 					<pre>
@@ -371,6 +462,12 @@ count_lines_in_files
 							}
 						</code>
 					</pre>
+
+					<aside class="notes">
+						The problem is that the listing includes too much boilerplate code to be considered more readable than the
+						original example.
+						The boilerplate can be reduced to minimum with the new ranges library from C++20.
+					</aside>
 				</section>
 				<section>
 					<pre>
@@ -391,6 +488,11 @@ count_lines_in_files
 							int count_lines(const std::string&);
 						</code>
 					</pre>
+
+					<aside class="notes">
+						if you wouldn't be familiar with this function what would you think it would do?
+						it's better to split it to two functions:
+					</aside>
 				</section>
 				<section>
 					<pre>
@@ -401,6 +503,10 @@ count_lines_in_files
 							int count_lines(std::ifstream);
 						</code>
 					</pre>
+
+					<aside class="notes">
+						this makes the final declarative program to be:
+					</aside>
 				</section>
 				<section>
 					<pre>
@@ -425,6 +531,10 @@ count_lines_in_files
 							}
 						</code>
 					</pre>
+
+					<aside class="notes">
+						let's compare the two solutions:
+					</aside>
 				</section>
 				<section data-transition="slide none">
 					<div class="twocolumn">
@@ -535,20 +645,50 @@ count_lines_in_files
 					</div>
 				</section>
 			</section>
-			<section data-transition="convex">Thinking functionally</section>
+			<section data-transition="convex">
+				Thinking functionally
+
+				<aside class="notes">
+					It would be inefficient and counterproductive to write code in the imperative style first
+					and then change it bit by bit until it became functional.
+					Instead, you should think about problems differently.
+					Instead of thinking of the algorithm steps,
+					you should consider what the input is, what the output is,
+					and which transformations you should perform to map one to the other
+					Let's go back to the previous example:
+				</aside>
+			</section>
 			<section data-transition="convex">
 				<h3>Thinking functionally</h3>
 				<section data-transition="slide fade">
-					<img data-src="lib/resources/thinking0.png" class="plain transparent">
+					<img data-src="lib/resources/thinking0.png" alt="the problem" class="plain transparent">
+
+					<aside class="notes">
+						how do we transform the input data to get the desired result ?
+						we can simplify the problem by analyzing the needed transformation
+						only for a single item from the given collection
+					</aside>
 				</section>
 				<section data-transition="fade">
-					<img data-src="lib/resources/thinking1.png" class="plain transparent">
+					<img data-src="lib/resources/thinking1.png" alt="simplifed to single element" class="plain transparent">
+
+					<aside class="notes">
+						it’s clear that you’re given <em>filename</em> but we need the <em>file contents</em> with which
+						we can count the number of lines
+					</aside>
 				</section>
 				<section data-transition="fade none">
-					<img data-src="lib/resources/thinking2.png" class="plain transparent">
+					<img data-src="lib/resources/thinking2.png" alt="solution of single element" class="plain transparent">
+
+					<aside class="notes">
+						You can <stroing>decompose</stroing> a bigger problem of counting the number of lines in a file
+						whose name you have into two smaller problems.
+						Now we can <strong>lift</strong> these two functions to be able to work not just on a single value,
+						but on a collection of values
+					</aside>
 				</section>
 				<section data-transition="none">
-					<img data-src="lib/resources/thinking3.png" class="plain transparent">
+					<img data-src="lib/resources/thinking3.png" alt="lifting the solution" class="plain transparent">
 				</section>
 			</section>
 			<section data-transition="convex">Pure functions and immutable data</section>
@@ -570,11 +710,27 @@ count_lines_in_files
 						<li class="fragment">debug</li>
 						<li class="fragment">parallelize</li>
 					</ul>
+
+					<aside class="notes">
+						<ul>
+							<li>you can get a terrific idea of what it does just by looking at its signature</li>
+							<li>Because “output depends only on input”</li>
+							<li>because you don’t have to worry about them dealing with hidden state and side effects</li>
+							<li>you don’t need to look outside the function’s scope to debug it</li>
+							<li>the compiler is free to change order or parallelize pure functions becuase the lack of side effects
+							</li>
+						</ul>
+					</aside>
 				</section>
 			</section>
-			<section>
+			<section data-transition="none slide">
 				<h3>Pure functions and immutable data</h3>
-				<h5>Examples:</h5>
+				<h5>Pure or not?</h5>
+				<section>
+					<aside class="notes">
+						Let's play a game in which you tell if a function is pure or not:
+					</aside>
+				</section>
 				<section data-transition="slide none">
 					<pre>
 						<code data-trim class="cpp" data-noescape>
