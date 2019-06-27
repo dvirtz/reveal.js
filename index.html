@@ -819,6 +819,17 @@
 	<script src="js/reveal.js"></script>
 
 	<script>
+		// for remote control support
+		function onF16orF17Pressed(event) {
+			Reveal.configure({
+				keyboard: {
+					37: 'prev',
+					39: 'next',
+					127: 'left',
+					128: 'right'
+				}
+			});
+		}
 		// More info about config & dependencies:
 		// - https://github.com/hakimel/reveal.js#configuration
 		// - https://github.com/hakimel/reveal.js#dependencies
@@ -829,6 +840,12 @@
 				escapeHTML: false,
 				tabReplace: '  '
 			},
+
+			keyboard: {
+				127: onF16orF17Pressed,
+				128: onF16orF17Pressed
+			},
+
 			dependencies: [
 				{ src: 'plugin/markdown/marked.js' },
 				{ src: 'plugin/markdown/markdown.js' },
