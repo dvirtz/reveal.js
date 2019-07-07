@@ -9,39 +9,7 @@
 
 	<link rel="stylesheet" href="css/reset.css">
 	<link rel="stylesheet" href="css/reveal.css">
-	<link rel="stylesheet" href="css/theme/black.css">
-
-	<style type="text/css">
-		.reveal .title td {
-			vertical-align: middle;
-			width: 50%;
-		}
-
-		.twocolumn {
-			display: grid;
-			grid-template-columns: 50% 50%;
-			grid-gap: 10px;
-			text-align: left;
-		}
-
-		.twocolumn pre {
-			display: inline-block;
-			font-size: 0.33em;
-			width: 100%;
-		}
-
-		.reveal section img.transparent {
-			background: none;
-		}
-
-		.reveal blockquote p::before {
-			content: "“";
-		}
-
-		.reveal blockquote p::after {
-			content: '”';
-		}
-	</style>
+	<link rel="stylesheet" href="css/theme/custom.css">
 
 	<!-- Theme used for syntax highlighting of code -->
 	<link rel="stylesheet" href="lib/css/vs2015.css">
@@ -59,13 +27,32 @@
 <body>
 	<div class="reveal">
 		<div class="slides">
-			<section data-transition="slide none">
+			<section data-transition="convex">
 				<table class="title">
 					<tr>
 						<td>
-							<h3>
+							<h3 class="fragment fade-out" data-fragment-index="1">
 								Introduction to Functional Programming
 							</h3>
+							<span class="fragment fade-in-then-out" data-fragment-index="1"
+								style="position: fixed; top: 5%; width: 50%;">
+								<p>Dvir Yitzchaki</p>
+								<img src="lib/resources/profile.jpeg" alt="profile" style="width: 20%; height: 20%;">
+								<ul>
+									<li>Sr. Software Engineer</li>
+									<li>Video Data Platform team</li>
+									<li>C++ Aficionado</li>
+								</ul>
+							</span>
+							<span class="fragment fade-in" data-fragment-index="2" style="position: fixed; top: 5%; width: 50%;">
+								<p>Agenda:</p>
+								<ol>
+									<li>What is functional programming</li>
+									<li>From imperative to declarative - a concrete example</li>
+									<li>Thinking Functionally</li>
+									<li>Pure functions and immutable data</li>
+								</ol>
+							</span>
 						</td>
 						<td>
 							<img src="https://imgs.xkcd.com/comics/functional_2x.png" alt="Functional">
@@ -73,23 +60,16 @@
 					</tr>
 				</table>
 			</section>
-			<section data-transition="none">
-				<table class="title">
-					<tr>
-						<td>
-							<p>Agenda:</p>
-							<ol>
-								<li>What is functional programming</li>
-								<li>From imperative to declarative - a concrete example</li>
-								<li>Thinking Functionally</li>
-								<li>Pure functions and immutable data</li>
-							</ol>
-						</td>
-						<td>
-							<img src="https://imgs.xkcd.com/comics/functional_2x.png" alt="Functional">
-						</td>
-					</tr>
-				</table>
+			<section data-background-image="lib/resources/turntable-1109588.jpg" style="height: 100%;">
+				<div class="stretch">
+					<div style="color: black; font-size: 200%; position: absolute; top: 45%;">What Is Functional Programming?
+					</div>
+					<p style="position: absolute; bottom: 5px; right: 0; color: black; font-size: small;">Image by <a
+							href="https://pixabay.com/users/theglassdesk-149631/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1109588">Becca
+							Clark</a> from <a
+							href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=1109588">Pixabay</a>
+					</p>
+				</div>
 			</section>
 			<section data-transition="convex">
 				<h3>What is functional programming</h3>
@@ -99,16 +79,9 @@
 					</blockquote>
 				</section>
 				<section>
-					<blockquote>
-						<p>Functional programming is a style of programming that emphasizes the evaluation of expressions,
-							rather than execution of commands.<br />
-							The expressions in these languages are formed by using functions to combine basic values.</p>
-						<footer style="text-align: left; font-style: normal; color: gray">--FAQ for comp.lang.functional</footer>
-					</blockquote>
-				</section>
-				<section>
+					Some of the highlights of FP are:
 					<ul>
-						<li class="fragment">Avoiding State
+						<li class="fragment">Minimizing State
 							<ul>
 								<li>Strive for pure functions</li>
 								<li>Prefer immutable data</li>
@@ -123,11 +96,21 @@
 						</li>
 					</ul>
 					<aside class="notes">
-						Some of the highlights of FP are:
+						Application state is bascially stored memory for the application, which can be in the form of variables,
+						properties, etc.
 					</aside>
 				</section>
 			</section>
-			<section data-transition="convex">A concrete example</section>
+			<section data-transition="convex" data-background-image="lib/resources/duo.jpg" style="height: 100%;">
+				<div class="stretch">
+					<div style="font-size: 150%; position: absolute; top: 0%; left: 15%;">Imperative vs. Declarative<br>A
+						Concrete
+						Example</div>
+					<p style="position: absolute; bottom: 5px; right: 0; font-size: small;">
+						<a href="https://www.bravuraduo.com">https://www.bravuraduo.com</a>
+					</p>
+				</div>
+			</section>
 			<section data-transition="convex">
 				<h3>Line count</h3>
 				<section>
@@ -476,7 +459,7 @@
 							count_lines_in_files
 							(const std::vector&lt;std::string&gt;& files)
 							{
-								using std::ranges::transform;
+								using std::ranges::view::transform;
 								return files | transform(count_lines);
 							}
 						</code>
@@ -515,8 +498,8 @@
 								return {filename};
 							}
 
-							int count_lines(std::fstream file) {
-								return ranges::count(
+							int count_lines(std::ifstream file) {
+								return std::ranges::count(
 									std::istreambuf_iterator&lt;char&gt;(file),
 									std::istreambuf_iterator&lt;char&gt;(),
 									'\n');
@@ -525,7 +508,7 @@
 							std::vector&lt;int&gt;
 							count_lines_in_files
 							(const std::vector&lt;std::string&gt;& files) {
-								using std::ranges::transform;
+								using std::ranges::view::transform;
 								return files | transform(open_file)
 								             | transform(count_lines);
 							}
@@ -571,8 +554,8 @@
 											return {filename};
 										}
 
-										int count_lines(std::fstream file) {
-											return ranges::count(
+										int count_lines(std::ifstream file) {
+											return std::ranges::count(
 												std::istreambuf_iterator&lt;char&gt;(file),
 												std::istreambuf_iterator&lt;char&gt;(),
 												'\n');
@@ -581,7 +564,7 @@
 										std::vector&lt;int&gt;
 										count_lines_in_files
 										(const std::vector&lt;std::string&gt;& files) {
-											using std::ranges::transform;
+											using std::ranges::view::transform;
 											return files | transform(open_file)
 											             | transform(count_lines);
 										}
@@ -625,8 +608,8 @@
 											return {filename};
 										}
 
-										int count_lines(std::fstream file) {
-											return ranges::count(
+										int count_lines(std::ifstream file) {
+											return std::ranges::count(
 												std::istreambuf_iterator&lt;char&gt;(file),
 												std::istreambuf_iterator&lt;char&gt;(),
 												'\n');
@@ -635,7 +618,7 @@
 										std::vector&lt;int&gt;
 										count_lines_in_files
 										(const std::vector&lt;std::string&gt;& files) {
-											using std::ranges::transform;
+											using std::ranges::view::transform;
 											return files | transform(open_file)
 											             | transform(count_lines);
 										}
@@ -645,9 +628,17 @@
 					</div>
 				</section>
 			</section>
-			<section data-transition="convex">
-				Thinking functionally
-
+			<section data-transition="convex" data-background-color="black"
+				data-background-image="lib/resources/piano-3611562.png" data-background-size="contain"
+				data-background-position="right" style="height: 100%;">
+				<div class="stretch">
+					<div style="font-size: 200%; position: absolute; width: 50%; top: 30%;">Thinking Functionally</div>
+					<p style="position: absolute; bottom: 5px; left: 0; font-size: small;">Image by <a
+							href="https://pixabay.com/users/mohamed_hassan-5229782/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=3611562">mohamed
+							Hassan</a> from <a
+							href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=3611562">Pixabay</a>
+					</p>
+				</div>
 				<aside class="notes">
 					It would be inefficient and counterproductive to write code in the imperative style first
 					and then change it bit by bit until it became functional.
@@ -691,9 +682,21 @@
 					<img data-src="lib/resources/thinking3.png" alt="lifting the solution" class="plain transparent">
 				</section>
 			</section>
-			<section data-transition="convex">Pure functions and immutable data</section>
+			<section data-transition="convex" data-background-image="lib/resources/musician-623362.jpg"
+				data-background-position="top">
+				<div class="stretch">
+					<div style="position: absolute; right: 0; color: black; top: 15%; width: 50%; font-size: 200%;">Pure Functions
+						and Immutable Data</div>
+					<p style="position: absolute; bottom: 5px; right: 0; font-size: small; color: black;">Image by <a
+							href="https://pixabay.com/users/LucasFZ70-748949/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=623362">LucasFZ70</a>
+						from <a
+							href="https://pixabay.com/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=image&amp;utm_content=623362">Pixabay</a>
+					</p>
+				</div>
+			</section>
 			<section data-transition="convex slide">
 				<h3>Pure functions and immutable data</h3>
+				<h5 id="pure-or-not" style="visibility: hidden">Pure or not?</h5>
 				<section>
 					<h6>Definition of a pure function:</h6>
 					<ul>
@@ -722,16 +725,13 @@
 						</ul>
 					</aside>
 				</section>
-			</section>
-			<section data-transition="none slide">
-				<h3>Pure functions and immutable data</h3>
-				<h5>Pure or not?</h5>
 				<section>
+					<h3> Pure or not?</h3>
 					<aside class="notes">
 						Let's play a game in which you tell if a function is pure or not:
 					</aside>
 				</section>
-				<section data-transition="slide none">
+				<section data-transition="slide none" data-state="turn-pure-or-not-on">
 					<pre>
 						<code data-trim class="cpp" data-noescape>
 							<span class="fragment">// pure</span>
@@ -796,10 +796,7 @@
 						</code>
 					</pre>
 				</section>
-			</section>
-			<section>
-				<h3>Pure functions and immutable data</h3>
-				<section>
+				<section data-state="turn-pure-or-not-off">
 					<h6>Advantages of immutable data:</h6>
 					<ul>
 						<li>Encourages writing side-effect free functions</li>
@@ -810,8 +807,18 @@
 				<section data-background-iframe="https://gcc.godbolt.org/z/iejoxY" data-background-interactive>
 				</section>
 			</section>
-			<section data-transition="convex">
-				Thank You!
+			<section data-transition="convex" data-background-image="https://media3.giphy.com/media/9rkXPtvLZ4YsU/giphy.gif">
+				<h1 style="color:darkgray; text-shadow: 2px 2px gray;">Thank you!</h1>
+			</section>
+			<section>
+				<h5>references:</h5>
+				<ul>
+					<li>Ivan Čukić - <a href="https://www.manning.com/books/functional-programming-in-c-plus-plus">Functional
+							Programming in C++</a></li>
+					<li>Alvin Alexander - <a
+							href="https://alvinalexander.com/scala/functional-programming-simplified-book">Functional Programming,
+							Simplified</a></li>
+				</ul>
 			</section>
 		</div>
 	</div>
@@ -836,6 +843,7 @@
 		Reveal.initialize({
 			slideNumber: 'c',
 			hash: true,
+			fragmentInURL: true,
 			highlight: {
 				escapeHTML: false,
 				tabReplace: '  '
@@ -856,25 +864,12 @@
 			]
 		});
 	</script>
-	<style type="text/css">
-		.footer {
-			display: grid;
-			grid-template-columns: 40% 40% auto;
-			position: absolute;
-			bottom: 3%;
-			justify-content: space-around;
-			width: 100%;
-			font-size: 50%;
-			color: black;
-			padding-top: 2px;
-			padding-bottom: 2px;
-		}
-	</style>
 
 	<!-- 2. Create hidden header/footer <div> -->
 	<div id="hidden" style="display:none;">
 		<div id="header">
-			<div class="footer">
+			<div id="footer">
+				<img src="lib/resources/vzm_rgb_p.png" alt="vzm logo" style="width: 1in;">
 				<div>Dvir Yitzchaki, Verizon Media, July 2019</div>
 				<div>Introduction to Functional Programming</div>
 			</div>
@@ -883,10 +878,19 @@
 
 	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 	<script type="text/javascript">
-		// 3. On Reveal.js ready event, copy header/footer <div> into each `.slide-background` <div>
-		var background = $("body").css("background-color")
-		var foreground = $(".reveal").css("color")
-		$(".footer").css("background-image", `linear-gradient(to right, ${foreground}, ${background})`)
+		Reveal.addEventListener('ready', function (event) {
+			$(".slide-number").detach().appendTo($("#footer"))
+			$(".slide-number").removeClass('slide-number').attr("id", "slideNumber")
+		});
+
+		Reveal.addEventListener('turn-pure-or-not-on', function (event) {
+			$('#pure-or-not').attr('style', 'visibility: visible')
+		}, false);
+
+		Reveal.addEventListener('turn-pure-or-not-off', function (event) {
+			$('#pure-or-not').attr('style', 'visibility: hidden')
+		}, false);
+
 		var header = $('#header').html();
 		if (window.location.search.match(/print-pdf/gi)) {
 			Reveal.addEventListener('ready', function (event) {

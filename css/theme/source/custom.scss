@@ -1,0 +1,102 @@
+/**
+ * Custom theme for reveal.js.
+ *
+ */
+
+
+// Default mixins and settings -----------------
+@import "../template/mixins";
+@import "../template/settings";
+// ---------------------------------------------
+
+
+// Include theme-specific fonts
+@import url(../../lib/font/source-sans-pro/source-sans-pro.css);
+
+// Override theme settings (see ../template/settings.scss)
+$backgroundColor: #191919;
+
+$mainColor: #fff;
+$headingColor: #fff;
+
+$mainFontSize: 42px;
+$mainFont: 'Source Sans Pro', Helvetica, sans-serif;
+$headingFont: 'Source Sans Pro', Helvetica, sans-serif;
+$headingTextShadow: none;
+$headingLetterSpacing: normal;
+$headingTextTransform: uppercase;
+$headingFontWeight: 600;
+$linkColor: #42affa;
+$linkColorHover: lighten( $linkColor, 15% );
+$selectionBackgroundColor: lighten( $linkColor, 25% );
+
+$heading1Size: 2.5em;
+$heading2Size: 1.6em;
+$heading3Size: 1.3em;
+$heading4Size: 1.0em;
+
+section.has-light-background {
+	&, h1, h2, h3, h4, h5, h6 {
+		color: #222;
+	}
+}
+
+.reveal .title td {
+	vertical-align: middle;
+	width: 50%;
+}
+
+.twocolumn {
+	display: grid;
+	grid-template-columns: 50% 50%;
+	grid-gap: 10px;
+	text-align: left;
+}
+
+.twocolumn pre {
+	display: inline-block;
+	font-size: 0.33em;
+	width: 100%;
+}
+
+.reveal section img.transparent {
+	background: none;
+}
+
+.reveal blockquote p::before {
+	content: "“";
+}
+
+.reveal blockquote p::after {
+	content: '”';
+}
+
+/*********************************************
+ * FOOTER
+ *********************************************/
+#footer {
+	display: grid;
+	grid-template-columns: 10% 30% 30% auto;
+	position: absolute;
+	bottom: 3%;
+	width: 90%;
+	font-size: 50%;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	align-items: center;
+	justify-items: center;
+	color: $backgroundColor;
+	background-image: linear-gradient(to right, $mainColor 90%, $mainColor 90%, $backgroundColor);
+}
+
+// #footer #slideNumber {
+// 	z-index: unset;
+// }
+
+#footer #slideNumber a {
+	color: currentColor;
+}
+
+// Theme template ------------------------------
+@import "../template/theme";
+// ---------------------------------------------
