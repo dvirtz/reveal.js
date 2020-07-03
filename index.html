@@ -16,8 +16,51 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section data-markdown data-separator="^----\n" data-separator-vertical="^---\n">
+					<textarea data-template>
+						<!-- .slide: class="aside" data-auto-animate -->
+
+						## virtual function
+
+						```cpp []
+						struct Base {
+								virtual ~Base() = default;
+								virtual int get() const { return 1; }
+						};
+
+						struct Derived : Base {
+								virtual int get() const { return 2; }
+						};
+
+						Base* p = new Derived();
+						assert(p->get() == 2);
+						```
+
+						<!-- .element: data-id="override" -->
+
+						---
+
+						## changing signature
+
+						<!-- .slide: class="aside" data-auto-animate -->
+
+						```cpp []
+						struct Base {
+								virtual ~Base() = default;
+								virtual int get(int i) const { return i + 1; }
+						};
+
+						struct Derived : Base {
+								virtual int get() const { return 2; }
+						};
+
+						Base* p = new Derived();
+						assert(p->get() == 2);
+						```
+
+						<!-- .element: data-id="override" -->
+					</textarea>
+					</section>
 			</div>
 		</div>
 
@@ -31,6 +74,9 @@
 			// - https://revealjs.com/config/
 			Reveal.initialize({
 				hash: true,
+
+				// uncomment me
+				// autoAnimate: false,
 
 				// Learn about plugins: https://revealjs.com/plugins/
 				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
